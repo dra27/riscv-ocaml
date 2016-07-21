@@ -343,6 +343,7 @@ utils/config.ml: utils/config.mlp config/Makefile Makefile
 	    $(call SUBST,LIBDIR) \
 	    $(call SUBST,LIBUNWIND_AVAILABLE) \
 	    $(call SUBST,LIBUNWIND_LINK_FLAGS) \
+	    $(call SUBST,LTO) \
 	    $(call SUBST,MKDLL) \
 	    $(call SUBST,MKEXE) \
 	    $(call SUBST,FLEXLINK_LDFLAGS) \
