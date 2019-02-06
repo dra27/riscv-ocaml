@@ -763,7 +763,8 @@ AS_IF([test x"$enable_shared" != "xno"],
     [arm*-*-linux*], [natdynlink=true],
     [arm*-*-freebsd*], [natdynlink=true],
     [earm*-*-netbsd*], [natdynlink=true],
-    [aarch64-*-linux*], [natdynlink=true])])
+    [aarch64-*-linux*], [natdynlink=true],
+    [riscv*-*-linux*], [natdynlink=true])])
 
 # Try to work around the Skylake/Kaby Lake processor bug.
 AS_CASE(["$CC,$host"],
@@ -856,7 +857,11 @@ AS_CASE([$host],
   [aarch64-*-linux*],
     [arch=arm64; system=linux],
   [x86_64-*-cygwin*],
-    [arch=amd64; system=cygwin]
+    [arch=amd64; system=cygwin],
+  [riscv32-*-linux*],
+    [arch=riscv; model=riscv32; system=linux],
+  [riscv64-*-linux*],
+    [arch=riscv; model=riscv64; system=linux]
 )
 
 AS_IF([test x"$enable_native_compiler" = "xno"],
@@ -966,7 +971,7 @@ AS_CASE(["$arch,$system"],
   [*,freebsd],
     [default_as="${toolpref}as"
     default_aspp="${toolpref}cc -c"],
-  [amd64,*|arm,*|arm64,*|i386,*|power,bsd*|power,netbsd],
+  [amd64,*|arm,*|arm64,*|i386,*|power,bsd*|power,netbsd|riscv,*],
     [default_as="${toolpref}as"
     AS_CASE([$ccfamily],
       [clang-*], [default_aspp="${toolpref}clang -c -Wno-trigraphs"],
