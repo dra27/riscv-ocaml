@@ -43,7 +43,7 @@
         .globl  caml_system__code_begin
 caml_system__code_begin:
 
-        .align  2
+        .align  4
         .globl  caml_call_gc
         .type   caml_call_gc, @function
 caml_call_gc:
@@ -171,7 +171,7 @@ caml_call_gc:
 /* Call a C function from OCaml */
 /* Function to call is in ARG */
 
-        .align  2
+        .align  4
         .globl  caml_c_call
         .type   caml_c_call, @function
 caml_c_call:
@@ -193,7 +193,7 @@ caml_c_call:
         .size   caml_c_call, .-caml_c_call
 
 /* Raise an exception from OCaml */
-        .align  2
+        .align  4
         .globl  caml_raise_exn
         .type   caml_raise_exn, @function
 caml_raise_exn:
@@ -224,7 +224,7 @@ caml_raise_exn:
 
 /* Raise an exception from C */
 
-        .align  2
+        .align  4
         .globl  caml_raise_exception
         .type   caml_raise_exception, @function
 caml_raise_exception:
@@ -251,7 +251,7 @@ caml_raise_exception:
 
 /* Start the OCaml program */
 
-        .align  2
+        .align  4
         .globl  caml_start_program
         .type   caml_start_program, @function
 caml_start_program:
@@ -357,7 +357,7 @@ caml_start_program:
 
 /* Callback from C to OCaml */
 
-        .align  2
+        .align  4
         .globl  caml_callback_exn
         .type   caml_callback_exn, @function
 caml_callback_exn:
@@ -369,7 +369,7 @@ caml_callback_exn:
         j       .Ljump_to_caml
         .size   caml_callback_exn, .-caml_callback_exn
 
-        .align  2
+        .align  4
         .globl  caml_callback2_exn
         .type   caml_callback2_exn, @function
 caml_callback2_exn:
@@ -382,7 +382,7 @@ caml_callback2_exn:
         j       .Ljump_to_caml
         .size   caml_callback2_exn, .-caml_callback2_exn
 
-        .align  2
+        .align  4
         .globl  caml_callback3_exn
         .type   caml_callback3_exn, @function
 caml_callback3_exn:
@@ -397,7 +397,7 @@ caml_callback3_exn:
         j       .Ljump_to_caml
         .size   caml_callback3_exn, .-caml_callback3_exn
 
-        .align  2
+        .align  4
         .globl  caml_ml_array_bound_error
         .type   caml_ml_array_bound_error, @function
 caml_ml_array_bound_error:
