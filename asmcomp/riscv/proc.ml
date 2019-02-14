@@ -292,6 +292,31 @@ let op_is_pure = function
 let num_stack_slots = [| 0; 0 |]
 let contains_calls = ref false
 
+(* See
+   https://github.com/riscv/riscv-elf-psabi-doc/blob/master/riscv-elf.md *)
+
+let int_dwarf_reg_numbers =
+  [| 10; 11; 12; 13; 14; 15; 16; 17;
+     18; 19; 20; 21; 22; 23; 24; 25;
+     7; 29; 29; 30; 31;
+     5; 6; 8; 9; 26; 27;
+  |]
+
+let float_dwarf_reg_numbers =
+  [| 32; 33; 34; 35; 36; 37; 38; 39;
+     40; 41;
+     42; 43; 44; 45; 46; 47; 48; 49;
+     50; 51; 52; 53; 54; 55; 56; 57;
+     58; 59;
+     60; 61; 62; 63;
+  |]
+
+let dwarf_register_numbers ~reg_class =
+  match reg_class with
+  | 0 -> int_dwarf_reg_numbers
+  | 1 -> float_dwarf_reg_numbers
+  | _ -> Misc.fata_errorf "Bad register class %d" reg_class
+
 (* Calling the assembler *)
 
 let assemble_file infile outfile =
