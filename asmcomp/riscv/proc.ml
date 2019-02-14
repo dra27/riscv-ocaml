@@ -317,7 +317,7 @@ let dwarf_register_numbers ~reg_class =
   match reg_class with
   | 0 -> int_dwarf_reg_numbers
   | 1 -> float_dwarf_reg_numbers
-  | _ -> Misc.fata_errorf "Bad register class %d" reg_class
+  | _ -> Misc.fatal_errorf "Bad register class %d" reg_class
 
 let stack_ptr_dwarf_register_number = 2
 
