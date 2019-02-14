@@ -317,6 +317,8 @@ let dwarf_register_numbers ~reg_class =
   | 1 -> float_dwarf_reg_numbers
   | _ -> Misc.fata_errorf "Bad register class %d" reg_class
 
+let stack_ptr_dwarf_register_number = 2
+
 (* Calling the assembler *)
 
 let assemble_file infile outfile =
