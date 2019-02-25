@@ -698,6 +698,7 @@ afl
 flat_float_array
 windows_unicode
 max_testsuite_dir_retries
+lto
 flambda_invariants
 flambda
 libunwind_link_flags
@@ -838,6 +839,7 @@ enable_cfi
 enable_installing_source_artifacts
 enable_installing_bytecode_programs
 enable_native_compiler
+enable_lto
 enable_flambda
 enable_flambda_invariants
 with_target_bindir
@@ -1508,6 +1510,7 @@ Optional Features:
                           also install the bytecode versions of programs
   --disable-native-compiler
                           do not build the native compiler
+  --enable-lto            enable lto
   --enable-flambda        enable flambda optimizations
   --enable-flambda-invariants
                           enable invariants checks in flambda
@@ -2812,6 +2815,7 @@ VERSION=4.09.1+dev0
 
 
 
+
 ## Generated files
 
 ac_config_files="$ac_config_files Makefile.common"
@@ -3087,6 +3091,12 @@ fi
 # Check whether --enable-native-compiler was given.
 if test "${enable_native_compiler+set}" = set; then :
   enableval=$enable_native_compiler;
+fi
+
+
+# Check whether --enable-lto was given.
+if test "${enable_lto+set}" = set; then :
+  enableval=$enable_lto;
 fi
 
 
@@ -12394,7 +12404,7 @@ $as_echo "$as_me: WARNING: Consider using GCC version 4.2 or above." >&2;};
 -fno-builtin-memcmp";
       internal_cflags="$gcc_warnings" ;; #(
   gcc-*) :
-    common_cflags="-O2 -fno-strict-aliasing -fwrapv";
+    common_cflags="-Os -fno-strict-aliasing -fwrapv";
       internal_cflags="$gcc_warnings" ;; #(
   msvc-*) :
     common_cflags="-nologo -O2 -Gy- -MD"
@@ -13648,6 +13658,8 @@ if test -z "$PARTIALLD"; then :
     PACKLD='ld -r -m elf64ppc -o $(EMPTY)' ;; #(
   power,gcc*,elf,ppc64le) :
     PACKLD='ld -r -m elf64lppc -o $(EMPTY)' ;; #(
+  riscv*,gcc*,linux,*) :
+    PACKLD='$(TOOLPREF)ld -r -o $(EMPTY)' ;; #(
   # For the Microsoft C compiler there must be no space at the end of the
     # string.
     *,cl,*,*) :
@@ -16499,6 +16511,12 @@ fi
 else
   flambda=false
   flambda_invariants=false
+fi
+
+if test x"$enable_lto" = "xyes"; then :
+  lto=true
+else
+  lto=false
 fi
 
 if test x"$enable_flat_float_array" = "xno"; then :

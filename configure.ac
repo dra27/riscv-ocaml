@@ -150,6 +150,7 @@ AC_SUBST([libunwind_include_flags])
 AC_SUBST([libunwind_link_flags])
 AC_SUBST([flambda])
 AC_SUBST([flambda_invariants])
+AC_SUBST([lto])
 AC_SUBST([max_testsuite_dir_retries])
 AC_SUBST([windows_unicode])
 AC_SUBST([flat_float_array])
@@ -288,6 +289,10 @@ AC_ARG_ENABLE([installing-bytecode-programs],
 AC_ARG_ENABLE([native-compiler],
   [AS_HELP_STRING([--disable-native-compiler],
     [do not build the native compiler])])
+
+AC_ARG_ENABLE([lto],
+  [AS_HELP_STRING([--enable-lto],
+    [enable lto])])
 
 AC_ARG_ENABLE([flambda],
   [AS_HELP_STRING([--enable-flambda],
@@ -536,7 +541,7 @@ AS_CASE([$host],
 -fno-builtin-memcmp";
       internal_cflags="$gcc_warnings"],
     [gcc-*],
-      [common_cflags="-O2 -fno-strict-aliasing -fwrapv";
+      [common_cflags="-Os -fno-strict-aliasing -fwrapv";
       internal_cflags="$gcc_warnings"],
     [msvc-*],
       [common_cflags="-nologo -O2 -Gy- -MD"
@@ -917,6 +922,7 @@ AS_IF([test -z "$PARTIALLD"],
     [power,gcc*,elf,ppc], [PACKLD='ld -r -m elf32ppclinux -o $(EMPTY)'],
     [power,gcc*,elf,ppc64], [PACKLD='ld -r -m elf64ppc -o $(EMPTY)'],
     [power,gcc*,elf,ppc64le], [PACKLD='ld -r -m elf64lppc -o $(EMPTY)'],
+    [riscv*,gcc*,linux,*], [PACKLD='$(TOOLPREF)ld -r -o $(EMPTY)'],
     # For the Microsoft C compiler there must be no space at the end of the
     # string.
     [*,cl,*,*], [PACKLD="link -lib -nologo $machine -out:"],
@@ -1602,6 +1608,8 @@ AS_IF([test x"$enable_flambda" = "xyes"],
     [flambda_invariants=false])],
   [flambda=false
   flambda_invariants=false])
+
+AS_IF([test x"$enable_lto" = "xyes"],[lto=true],[lto=false])
 
 AS_IF([test x"$enable_flat_float_array" = "xno"],
   [flat_float_array=false],
