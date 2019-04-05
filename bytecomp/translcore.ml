@@ -48,7 +48,8 @@ let prim_fresh_oo_id =
 
 let transl_extension_constructor env path ext =
   let path =
-    Stdlib.Option.map (Printtyp.rewrite_double_underscore_paths env) path
+    Printtyp.wrap_printing_env env ~error:true (fun () ->
+      Stdlib.Option.map (Printtyp.rewrite_double_underscore_paths env) path)
   in
   let name =
     match path, !Clflags.for_package with
@@ -468,11 +469,13 @@ and transl_exp0 e =
          do *)
       begin match Typeopt.classify_lazy_argument e with
       | `Constant_or_function ->
-        (* a constant expr of type <> float gets compiled as itself *)
+        (* A constant expr (of type <> float if [Config.flat_float_array] is
+           true) gets compiled as itself. *)
          transl_exp e
-      | `Float ->
+      | `Float_that_cannot_be_shortcut ->
           (* We don't need to wrap with Popaque: this forward
-             block will never be shortcutted since it points to a float. *)
+             block will never be shortcutted since it points to a float
+             and Config.flat_float_array is true. *)
           Lprim(Pmakeblock(Obj.forward_tag, Immutable, None),
                 [transl_exp e], e.exp_loc)
       | `Identifier `Forward_value ->
